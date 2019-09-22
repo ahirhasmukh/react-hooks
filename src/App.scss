@@ -1,3 +1,17 @@
 .App {
   text-align: center;
 }
+
+.name {
+  color: gray;
+  border: 1px solid gray;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  width: 200px;
+  
+  &.tagTitle {
+    color: green;
+    border-color: blue;
+    border-style: dotted;
+  }
+}
