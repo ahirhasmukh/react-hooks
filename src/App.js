@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.scss";
+import Input from "./components/input";
 
 function App() {
   const [name, setName] = useState("test");
   const [income, setIncome] = useState("high");
 
-  const nameRef = useRef();
-  const ageRef = useRef();
-  const marriedRef = useRef();
-  const submitRef = useRef();
+  const nameRef = useRef(null);
+  const ageRef = useRef(null);
+  const marriedRef = useRef(null);
+  const submitRef = useRef(null);
 
   useEffect(() => {
     nameRef.current.focus();
@@ -45,6 +46,13 @@ function App() {
     e.preventDefault();
   }
 
+  const inputStyle = {
+    width: '400px',
+    height: '40px',
+    border: '1px solid #ccc',
+    outline: 0
+  }
+
   return (
     <div className="App">
       <form onSubmit={onSubmitHandle}>
@@ -72,45 +80,24 @@ function App() {
         </div>
       </form>
 
-     
-        <div>
-          <label>Name:</label>
-          <input
-            ref={nameRef}
-            id="nameInput"
-            type="text"
-            placeholder="Enter name"
-            onKeyDown={keyPressHandler}
-          />
-        </div>
+      <div>
+        <label>Name:</label>
+        <Input ref={nameRef} id="nameInput" type="text" placeholder="Enter name" style={inputStyle} onKeyDown={keyPressHandler}></Input>
+      </div>
 
-        <div>
-          <label>Age:</label>
-          <input
-            ref={ageRef}
-            id="ageInput"
-            type="text"
-            placeholder="Enter age"
-            onKeyDown={keyPressHandler}
-          />
-        </div>
+      <div>
+        <label>Age:</label>
+        <Input ref={ageRef} id="ageInput" type="text" placeholder="Enter age" style={inputStyle} onKeyDown={keyPressHandler}></Input>
+      </div>
 
-        <div>
-          <label>Married:</label>
-          <input
-            ref={marriedRef}
-            id="marriedInput"
-            type="checkbox"
-            onKeyDown={keyPressHandler}
-          />
-        </div>
+      <div>
+        <label>Married:</label>
+        <Input ref={marriedRef} id="marriedInput" type="checkbox" onKeyDown={keyPressHandler}></Input>
+      </div>
 
-        <div>
-          <button ref={submitRef} onClick={onClickHandle} type="submit" onKeyDown={keyPressHandler}>
-            Submit
-          </button>
-        </div>
-     
+      <div>
+        <button ref={submitRef} onClick={onClickHandle} type="submit">Submit</button>
+      </div>
     </div>
   );
 }

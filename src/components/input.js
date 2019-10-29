@@ -1,7 +1,9 @@
 import React from 'react';
 
-function Input({placeholder, type}) {
-    return <input placeholder={placeholder} type={type} />
+function Input({placeholder, type, inlineStyle, onKeyDown, id}, ref) {
+    return <input ref={ref} id={id} placeholder={placeholder} type={type} onKeyDown={onKeyDown} style={inlineStyle} />
 }
 
-export default Input;
+const ref = React.forwardRef(Input);
+
+export default ref;
