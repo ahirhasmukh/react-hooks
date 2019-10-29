@@ -1,121 +1,116 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.scss";
-import NameTag from "./components/nameTag";
-import Input from "./components/input";
-import Item from "./components/item";
-import useList from "./hooks/useList";
-// const styleName = {
-//   color: "gray",
-//   border: "1px solid gray",
-//   paddingBottom: "50px",
-//   paddingTop: "50px",
-//   width: "200px"
-// };
-
-// const nameTagTitle = {
-//   color: "red",
-//   borderColor: "blue",
-//   borderStyle: "dotted"
-// }
-
-// const nameTagTitle_one = {
-//   color: "blue"
-// }
-
-const removeInline = BaseComponents => props => {
-  const removeTag = { ...props };
-  delete removeTag.style;
-
-  return <BaseComponents {...removeTag} />;
-};
-// eslint-disable-next-line no-unused-vars
-const CleanNameTag = removeInline(NameTag);
-
-const initialNames = [
-  { firstName: "Hasmukh", lastName: "Baldaniya" },
-  { firstName: "Vipul", lastName: "Ahir" },
-  { firstName: "Paresh", lastName: "Baldaniya" },
-  { firstName: "Jenish", lastName: "Ahir" }
-];
-
-const groceryNames = [
-  { name: "Tomato", calorie: 20 },
-  { name: "Rice", calorie: 30 },
-  { name: "Candy", calorie: 100 }
-];
 
 function App() {
-  // const [age, setAge] = useState(28);
-  // const [names, setName] = useState(initialNames);
-  const item = useList(groceryNames);
-  const [editable, setEditable] = useState(false);
+  const [name, setName] = useState("test");
+  const [income, setIncome] = useState("high");
 
-  function removeHandle(e) {
-    item.removeItem(e.target.name);
-  };
+  const nameRef = useRef();
+  const ageRef = useRef();
+  const marriedRef = useRef();
+  const submitRef = useRef();
 
-  function editHandle(e){
-    // const filteredItem = list.filter(item => item.name !== e.target.name);
-    setEditable(true);
-  }
+  useEffect(() => {
+    nameRef.current.focus();
+  }, []);
 
-  function updateHandle(event, index) {
-    if(event.key === 'Enter') {
-      // const copyList = [...list];
-      // copyList[index].name = event.target.value
-     // list[index].name = event.target.value;
-      setEditable(!editable);
-    //  setList(list);
-
-    item.saveItem(index, event.target.name);
+  function keyPressHandler(e) {
+    if (e.keyCode === 13) {
+      if (e.target.id === "nameInput") {
+        ageRef.current.focus();
+      }
+      if (e.target.id === "ageInput") {
+        marriedRef.current.focus();
+      }
+      if (e.target.id === "marriedInput") {
+        submitRef.current.focus();
+      }
     }
   }
 
-  // const ageUpHandle = () => {
-  //   setAge(age + 1);
-  // }
+  function onClickHandle(e) {
+    console.log(e.target);
+  }
 
-  // const ageDownHandle = () => {
-  //   setAge(age - 1);
-  // }
+  function handleNameChange(e) {
+    setName(e.target.value);
+  }
+
+  function handleIncomeChange(e) {
+    setIncome(e.target.value);
+  }
+
+  function onSubmitHandle(e) {
+    console.log("State =>", name, income);
+    e.preventDefault();
+  }
+
   return (
     <div className="App">
-      {/* <h1 style={{...styleName, ...nameTagTitle}}>Hi, React App</h1>
-      <h3 style={styleName}>Hasmukh</h3> */}
+      <form onSubmit={onSubmitHandle}>
+        <div>
+          <label>Name:</label>
+          <input
+            value={name}
+            type="text"
+            onChange={handleNameChange}
+            placeholder="Enter name"
+          />
+        </div>
 
-      {/* <h3>Use State</h3>
-      <h2>My age is: {age}</h2>
-      <button type="button" onClick={ageUpHandle}>Age Up</button>
-      <button type="button" onClick={ageDownHandle}>Age Down</button> */}
+        <div>
+          <label>Income:</label>
+          <select value={income} onChange={handleIncomeChange}>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
 
-      <h1 className="name tagTitle">Grocery List</h1>
+        <div>
+          <button type="submit">Save</button>
+        </div>
+      </form>
 
-      {item.list.map((item, index) => {
-        return (
-          <Item
-            key={index}
-            name={item.name}
-            onRemoveEvent={removeHandle}
-            calorie={item.calorie}
-            editable={editable}
-            onEditEvent={editHandle}
-            onUpdateValue={updateHandle}
-            index={index}
-          ></Item>
-        );
-      })}
+     
+        <div>
+          <label>Name:</label>
+          <input
+            ref={nameRef}
+            id="nameInput"
+            type="text"
+            placeholder="Enter name"
+            onKeyDown={keyPressHandler}
+          />
+        </div>
 
-      {/* {
-      names.map((value, index) => {
-        return <NameTag key={`${index}${value.firstName}${value.lastName}`} firstName={value.firstName} lastName={value.lastName}></NameTag>
-      })
-     } */}
+        <div>
+          <label>Age:</label>
+          <input
+            ref={ageRef}
+            id="ageInput"
+            type="text"
+            placeholder="Enter age"
+            onKeyDown={keyPressHandler}
+          />
+        </div>
 
-      {/* <CleanNameTag firstName={names[0].firstName} lastName={names[0].lastName}></CleanNameTag>
-      <NameTag firstName={names[1].firstName} lastName={names[1].lastName}></NameTag>
-      <NameTag firstName={names[2].firstName} lastName={names[2].lastName}></NameTag>
-       */}
-      {/* <Input placeholder="Enter value" type="text"></Input> */}
+        <div>
+          <label>Married:</label>
+          <input
+            ref={marriedRef}
+            id="marriedInput"
+            type="checkbox"
+            onKeyDown={keyPressHandler}
+          />
+        </div>
+
+        <div>
+          <button ref={submitRef} onClick={onClickHandle} type="submit" onKeyDown={keyPressHandler}>
+            Submit
+          </button>
+        </div>
+     
     </div>
   );
 }
