@@ -1,43 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
-import "./App.scss";
-
-const initXY = {
-  x: null,
-  y: null
-}
+import React, { useState } from "react";
+import usePrevious from './hooks/usePrevious';
 
 function App() {
-  const [time, setTime] = useState(Date);
-  const [xy, setXY] = useState(initXY);
-
-  useEffect(()=> {
-    let handle = setInterval(()=> {
-      setTime(Date);
-    }, 3000);
-
-    return () => {
-      clearInterval(handle);
-    }
-  })
-
-  function mouseMoveHandler(e) {
-    setXY({
-      x: e.clientX,
-      y: e.clientY
-    })
-  }
-
-  useEffect(()=> {
-    window.addEventListener("mousemove", mouseMoveHandler);
-    return () => {
-      window.addEventListener("mousemove", mouseMoveHandler);
-    }
-  });
+  const [age, setAge] = useState(21);
+  const previousAge = usePrevious(age);
 
   return (
     <div className="App">
-      <span style={{margin:"20px",display:"inline-block"}}>Date & Time: {time}</span>
-      <h3>{`x: ${xy.x}, y: ${xy.y}`}</h3>
+      <h2>Current age: {age}</h2>
+      <h2>Previous age: {previousAge}</h2>
+      <h3>
+        <button onClick={()=>setAge(age - 1)}>Make me younger</button>
+      </h3>
     </div>
   );
 }
